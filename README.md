@@ -50,7 +50,7 @@ signs data set:
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
 
-![alt text][demo1.png]
+![Visualize Data set](./demo1.png)
 
 ### Design and Test a Model Architecture
 
@@ -108,7 +108,7 @@ As the answer in question 2.
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][demo2.png]
+![Test images](./demo2.png)
 
 The first image might be difficult to classify because ...
 
