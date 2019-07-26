@@ -56,7 +56,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-I convert the image to YUV space and take only the Y channel to have clearer pattern with size (32, 32, 1). And then normalize the 1-channel image to 0 to 1 for better training performance.
+According to the paper Traffic Sign Recognition with Multi-Scale Convolutional Networks by Pierre Sermanet and Yann LeCun, I convert the image to YUV space and take only the Y channel to have clearer pattern with size (32, 32, 1). I've actually tried both grayscale and YUV space convertion, and in the end, the Y channel seems to work better in my case. And then normalize the 1-channel image to 0 to 1 for better training performance.
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -85,12 +85,14 @@ EPOCHS = 15
 BATCH_SIZE = 128
 LEARNING_RATE = 0.0008
 
+While tuning the hyperparameters, I basically fix the batch size and observe the others, while changing the learning rate to a little bit lower than 0.001 would benefit the growth of the training accuracy. On the other hand, the training usually start to converge after 10 to 12 epochs. Therefore, I use 15 epochs in total to save training time and at the same time prevent over fitting with too much epochs.
+
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of 97.6%
+* training set accuracy of 97.9%
 * validation set accuracy of 98.2%
-* test set accuracy of 96.3%
+* test set accuracy of 96.0%
 
 If an iterative approach was chosen:
 1. What was the first architecture that was tried and why was it chosen? What were some problems with the initial architecture?
@@ -114,27 +116,29 @@ The first image might be difficult to classify because ...
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-Here are the results of the prediction (result: 80%):
+Here are the results of the prediction (result: 100%):
 
 | Image                 |     Prediction                                | 
 |:---------------------:|:---------------------------------------------:| 
 | Yield                 | Yield                                         |
 | No passing            | No passing                                    | 
 | Speed limit (70km/h)  | Speed limit (70km/h)                          |
-| Pedestrians           | General caution                                   |
+| Pedestrians           | Pedestrians                                   |
 | Turn left ahead       | Turn left ahead                               |
+
+Sometimes the Pedestrian sign would be recognized as General caution sign, 
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The only wrong answer in the 5 test image was mistaking a Pedestrinas to a General caution. However, the correct answer is still at second place with 31.1% of posibility.
+Sometimes the Pedestrian sign would be recognized as General caution sign, while there existed similar patterns (red triangle and black in the middle) in both signs. However, even if the classifier gave higher vote to the wrong answer, the correct answer is still at second place with 31.1% of posibility. I think the solution for such case is add some contrast on the training dataset, which would help the feature in the middle more robust.
 
 
 | Probability           |     Prediction                                | 
 |:---------------------:|:---------------------------------------------:| 
 | 1.0                   | Yield                                         | 
-| 0.998                 | No passing                                    |
-| 0.997                 | Speed limit (70km/h)                          |
-| 0.686                 | General caution                               |
+| 1.0                   | No passing                                    |
+| 1.0                   | Speed limit (70km/h)                          |
+| 1.0                   | General caution                               |
 | 1.0                   | Turn left ahead                               |
 
 
@@ -158,7 +162,7 @@ The lab environment can be created with CarND Term1 Starter Kit. Click [here](ht
 ### Dataset and Repository
 
 1. Download the data set. The classroom has a link to the data set in the "Project Instructions" content. This is a pickled dataset in which we've already resized the images to 32x32. It contains a training, validation and test set.
-2. Clone the project, which contains the Ipython notebook and the writeup template.
+2. Clone the project, which contains the Ipython notebook and the writeup template. 
 ```sh
 git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
 cd CarND-Traffic-Sign-Classifier-Project
